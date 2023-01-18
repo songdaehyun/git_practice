@@ -1,0 +1,39 @@
+```
+import { useState, useRef, useEffect } from "react";
+
+function Modal() {
+  const [modalOn, setmodalOn] = useState(false);
+  const node = useRef();
+
+  console.log(node);
+  console.log(node.current);
+
+  useEffect(() => {
+    const clickOustside = (e) => {
+      if (modalOn && node.current && !node.current.contains(e.target)) {
+        setmodalOn(false);
+      }
+    };
+
+    document.addEventListener("mousedown", clickOustside);
+
+    return () => {
+      document.removeEventListener("mousedown", clickOustside);
+    };
+  }, [modalOn]);
+
+  const showModal = () => {
+    setmodalOn(true);
+  };
+
+  return (
+    <div>
+      <div>실험용 영역</div>
+      {modalOn ? <div ref={node}>내가 모달의 내용이다</div> : null}
+      <button onClick={showModal}>show modal</button>
+    </div>
+  );
+}
+
+export default Modal;
+```
